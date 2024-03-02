@@ -13,7 +13,12 @@ namespace Password_Manager
     public partial class PasswordGeneratorForm : Form
     {
         #region Constants
-        const int defaultPwdLength = 16;
+            const int defaultPwdLengthPosition = 6; // = 16
+            const int nrOfOptions = 9;
+
+            // First and last positions of exclude options in config vector
+            const int exclusionsStartPos = 4;
+            const int exclusionsEndPos = 5;
         #endregion
 
         public PasswordGeneratorForm()
@@ -30,7 +35,7 @@ namespace Password_Manager
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
-            pwdLengthComboBox.SelectedItem = defaultPwdLength;
+            pwdLengthComboBox.SelectedIndex = defaultPwdLengthPosition;
             numbersCheckBox.Checked = true;
             lowercaseCheckBox.Checked = true;
             uppercaseCheckBox.Checked = true;
@@ -42,14 +47,24 @@ namespace Password_Manager
         private void generatePwdButton_Click(object sender, EventArgs e)
         {
             // Generate configuration to pass to generator
-            bool[] config = new bool[9];
+            bool[] config = new bool[nrOfOptions];
             int currentPos = 0;
             foreach (var control in this.Controls)
                 if (control is CheckBox)
+                {
                     config[currentPos++] = ((CheckBox)control).Checked;
+                    
+                    // If it is an exclude option
+                    if (currentPos >= exclusionsStartPos && currentPos <= exclusionsEndPos)
+                        config[currentPos] = !config[currentPos];
+                }
+            int pwdLength = int.Parse(pwdLengthComboBox.SelectedItem.ToString());
 
             //
-            PasswordGenerator passwordGenerator = new PasswordGenerator(config);
+            PasswordGenerator passwordGenerator = new PasswordGenerator(pwdLength, config);
+
+            //
+            pwdReadyTextBox.Text = passwordGenerator.GeneratePassword();
         }
     }
 }
