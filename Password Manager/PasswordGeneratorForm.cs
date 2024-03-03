@@ -49,11 +49,9 @@ namespace Password_Manager
             // Generate configuration to pass to generator
             bool[] config = new bool[nrOfOptions];
             int currentPos = 8;
-            foreach (var control in this.Controls)
+            foreach (var control in this.Controls)  // Iterates backwards through all controls
                 if (control is CheckBox)
                 {
-                    // config[currentPos++] = ((CheckBox)control).Checked;
-                    // if (((CheckBox)control).Checked) config[currentPos--] = true;
                     config[currentPos] = ((CheckBox)control).Checked;
 
                     // If it is an exclude option
@@ -64,10 +62,10 @@ namespace Password_Manager
                 }
             int pwdLength = int.Parse(pwdLengthComboBox.SelectedItem.ToString());
 
-            //
+            // Create password generator based on given config
             PasswordGenerator passwordGenerator = new PasswordGenerator(pwdLength, config);
 
-            //
+            // Generate & print password
             pwdReadyTextBox.Text = passwordGenerator.GeneratePassword();
         }
     }
