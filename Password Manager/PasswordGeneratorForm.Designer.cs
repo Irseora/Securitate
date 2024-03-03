@@ -234,7 +234,7 @@
             this.noInternetCheckBox.Name = "noInternetCheckBox";
             this.noInternetCheckBox.Size = new System.Drawing.Size(244, 21);
             this.noInternetCheckBox.TabIndex = 15;
-            this.noInternetCheckBox.Text = "(do NOT send acress the Internet)";
+            this.noInternetCheckBox.Text = "(do NOT send across the Internet)";
             this.noInternetCheckBox.UseVisualStyleBackColor = true;
             // 
             // noInternetLabel

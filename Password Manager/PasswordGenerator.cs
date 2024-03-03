@@ -9,16 +9,19 @@ namespace Password_Manager
     internal class PasswordGenerator
     {
         #region Constants
-            // First and last positions of exclude options in config vector
-            const int exclusionsStartPos = 4;
-            const int exclusionsEndPos = 5;
+            // Position of first & last exclude flag in config array
+            const int posOfFirstExcludeFlag = 4;
+            const int posOfLastExcludeFlag = 5;
+
+            // Number to subtract from iterator, when checking excludes
+            const int toSubFromIt = 4;
         #endregion
 
-        #region Private
-        /// <summary>
-        /// Length of password
-        /// </summary>
-        int passwordLength;
+        #region Private Properties
+            /// <summary>
+            /// Length of password
+            /// </summary>
+            int passwordLength;
 
             /// <summary>
             /// Custom settings of the password generator
@@ -39,15 +42,15 @@ namespace Password_Manager
             string[] charSets = new string[]
             {
                 "!@#$%^&*-_=+{}[]()/\\'\"`~,;:.<>?",    /*Symbols*/
-                "0123456789",                           /*Numbers*/
+                "0123456789",                           /*Number*/
                 "abcdefghijklmnopqrstuvwxyz",           /*Lowercase Letters*/
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"            /*Uppercase Letters*/
             };
 
-            string[] toExcludeCharSets = new string[]
+            string[] excludeCharSets = new string[]
             {
-                    "il1Lo0O\'\"`",                         /*Similar Characters*/
-                    "{}[]()/\\\'\"`~,;:.<>?"                /*Ambiguous Characters*/
+                "il1Lo0O",                              /*Similar Characters*/
+                "{}[]()/\\\'\"`~,;:.<>?"                /*Ambiguous Characters*/
             };
         #endregion
 
@@ -62,6 +65,10 @@ namespace Password_Manager
             configFlags = config;
         }
 
+        /// <summary>
+        /// Generates a password according to given config
+        /// </summary>
+        /// <returns>Generated password as a string</returns>
         public string GeneratePassword()
         {
             string password = "";
@@ -74,30 +81,22 @@ namespace Password_Manager
                 {
                     // Pick a random character from chosen set
                     int randomPosInCharSet = rnd.Next(0, charSets[randomCharSet].Length);
+                    char randomCharacter = charSets[randomCharSet][randomPosInCharSet];
 
-                    if (!ShouldBeExcluded(randomCharSet, randomPosInCharSet))
-                        password += charSets[randomCharSet][randomPosInCharSet];
+                    // Can the chosen character be added, or does it need to be excluded?
+                    bool canAdd = true;
+
+                    // Check excluded character sets
+                    for (int i = posOfFirstExcludeFlag; i <= posOfLastExcludeFlag; i++)
+                        if (!configFlags[i])
+                            if (excludeCharSets[i - toSubFromIt].Contains(randomCharacter))
+                                canAdd = false;
+
+                    if (canAdd) password += randomCharacter;
                 }
             }
 
             return password;
-        }
-
-        /// <summary>
-        /// Check if chosen random character should be excluded
-        /// </summary>
-        /// <param name="randomCharSet"></param>
-        /// <param name="randomPosInCharSet"></param>
-        /// <returns></returns>
-        private bool ShouldBeExcluded(int randomCharSet, int randomPosInCharSet)
-        {
-            for (int i = exclusionsStartPos; i <= exclusionsEndPos; i++)
-                if (!configFlags[i])
-                    for (int j = 0; j < toExcludeCharSets[i].Length; j++)
-                        if (toExcludeCharSets[i][j] == charSets[randomCharSet][randomPosInCharSet])
-                            return true;
-
-            return false;
         }
     }
 }
