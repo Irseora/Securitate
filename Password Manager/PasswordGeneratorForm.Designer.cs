@@ -65,9 +65,9 @@
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleLabel.Location = new System.Drawing.Point(13, 13);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(356, 31);
+            this.titleLabel.Size = new System.Drawing.Size(263, 31);
             this.titleLabel.TabIndex = 0;
-            this.titleLabel.Text = "Secure Password Generator";
+            this.titleLabel.Text = "Password Generator";
             // 
             // pwdLengthLabel
             // 
@@ -406,8 +406,8 @@
             this.Controls.Add(this.pwdLengthLabel);
             this.Controls.Add(this.titleLabel);
             this.Name = "PasswordGeneratorForm";
-            this.Text = "Secure Password Generator";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Text = "Password Generator";
+            this.Load += new System.EventHandler(this.PasswordGeneratorForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

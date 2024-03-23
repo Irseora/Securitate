@@ -33,7 +33,7 @@ namespace Password_Manager
         /// - Lowercase Letters <br/>
         /// - Uppercase Letters
         /// </summary>
-        private void Form1_Load(object sender, EventArgs e)
+        private void PasswordGeneratorForm_Load(object sender, EventArgs e)
         {
             pwdLengthComboBox.SelectedIndex = defaultPwdLengthPosition;
             numbersCheckBox.Checked = true;
@@ -63,7 +63,7 @@ namespace Password_Manager
             int pwdLength = int.Parse(pwdLengthComboBox.SelectedItem.ToString());
 
             // Create password generator based on given config
-            PasswordGenerator passwordGenerator = new PasswordGenerator(pwdLength, config);
+            OldPasswordGenerator passwordGenerator = new OldPasswordGenerator(pwdLength, config);
 
             // Generate & print password
             pwdReadyTextBox.Text = passwordGenerator.GeneratePassword();
